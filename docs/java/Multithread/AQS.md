@@ -1,5 +1,5 @@
 
-**目录：**
+点击关注[公众号](#公众号)及时获取笔主最新更新文章，并可免费领取本文档配套的《Java面试突击》以及Java工程师必备学习资源。
 <!-- MarkdownTOC -->
 
 - [1 AQS 简单介绍](#1-aqs-简单介绍)
@@ -23,10 +23,6 @@
 
 > 常见问题：AQS原理？;CountDownLatch和CyclicBarrier了解吗,两者的区别是什么？用过Semaphore吗？
 
-**本节思维导图：**
-
-![并发编程面试必备：AQS 原理以及 AQS 同步组件总结](http://my-blog-to-use.oss-cn-beijing.aliyuncs.com/18-10-31/61115865.jpg)
-
 
 ### 1 AQS 简单介绍
 AQS的全称为（AbstractQueuedSynchronizer），这个类在java.util.concurrent.locks包下面。
@@ -37,7 +33,7 @@ AQS是一个用来构建锁和同步器的框架，使用AQS能简单且高效�
 
 ### 2 AQS 原理
 
-> 在面试中被问到并发知识的时候，大多都会被问到“请你说一下自己对于AQS原理的理解”。下面给大家一个示例供大家参加，面试不是背题，大家一定要加入自己的思想，即使加入不了自己的思想也要保证自己能够通俗的讲出来而不是背出来。
+> 在面试中被问到并发知识的时候，大多都会被问到“请你说一下自己对于AQS原理的理解”。下面给大家一个示例供大家参考，面试不是背题，大家一定要加入自己的思想，即使加入不了自己的思想也要保证自己能够通俗的讲出来而不是背出来。
 
 下面大部分内容其实在AQS类注释上已经给出了，不过是英语看着比较吃力一点，感兴趣的话可以看看源码。
 
@@ -58,10 +54,9 @@ AQS使用一个int成员变量来表示同步状态，通过内置的FIFO队列�
 private volatile int state;//共享变量，使用volatile修饰保证线程可见性
 ```
 
-状态信息通过protected类型的getState，setState，compareAndSetState进行操作
+状态信息通过protected类型的`getState`，`setState`，`compareAndSetState`进行操作
 
 ```java
-
 //返回同步状态的当前值
 protected final int getState() {  
         return state;
@@ -80,10 +75,125 @@ protected final boolean compareAndSetState(int expect, int update) {
 
 **AQS定义两种资源共享方式**
 
-- **Exclusive**（独占）：只有一个线程能执行，如ReentrantLock。又可分为公平锁和非公平锁：
-    - 公平锁：按照线程在队列中的排队顺序，先到者先拿到锁
-    - 非公平锁：当线程要获取锁时，无视队列顺序直接去抢锁，谁抢到就是谁的
--  **Share**（共享）：多个线程可同时执行，如Semaphore/CountDownLatch。Semaphore、CountDownLatCh、 CyclicBarrier、ReadWriteLock 我们都会在后面讲到。
+**1)Exclusive**（独占）
+
+只有一个线程能执行，如ReentrantLock。又可分为公平锁和非公平锁,ReentrantLock 同时支持两种锁,下面以 ReentrantLock 对这两种锁的定义做介绍：
+
+- 公平锁：按照线程在队列中的排队顺序，先到者先拿到锁
+- 非公平锁：当线程要获取锁时，先通过两次 CAS 操作去抢锁，如果没抢到，当前线程再加入到队列中等待唤醒。
+
+> 说明：下面这部分关于 `ReentrantLock` 源代码内容节选自：https://www.javadoop.com/post/AbstractQueuedSynchronizer-2，这是一篇很不错文章，推荐阅读。
+
+**下面来看 ReentrantLock 中相关的源代码：**
+
+ReentrantLock 默认采用非公平锁，因为考虑获得更好的性能，通过 boolean 来决定是否用公平锁（传入 true 用公平锁）。
+
+```java
+/** Synchronizer providing all implementation mechanics */
+private final Sync sync;
+public ReentrantLock() {
+    // 默认非公平锁
+    sync = new NonfairSync();
+}
+public ReentrantLock(boolean fair) {
+    sync = fair ? new FairSync() : new NonfairSync();
+}
+```
+
+ReentrantLock 中公平锁的 `lock` 方法
+
+```java
+static final class FairSync extends Sync {
+    final void lock() {
+        acquire(1);
+    }
+    // AbstractQueuedSynchronizer.acquire(int arg)
+    public final void acquire(int arg) {
+        if (!tryAcquire(arg) &&
+            acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+            selfInterrupt();
+    }
+    protected final boolean tryAcquire(int acquires) {
+        final Thread current = Thread.currentThread();
+        int c = getState();
+        if (c == 0) {
+            // 1. 和非公平锁相比，这里多了一个判断：是否有线程在等待
+            if (!hasQueuedPredecessors() &&
+                compareAndSetState(0, acquires)) {
+                setExclusiveOwnerThread(current);
+                return true;
+            }
+        }
+        else if (current == getExclusiveOwnerThread()) {
+            int nextc = c + acquires;
+            if (nextc < 0)
+                throw new Error("Maximum lock count exceeded");
+            setState(nextc);
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+非公平锁的 lock 方法：
+
+```java
+static final class NonfairSync extends Sync {
+    final void lock() {
+        // 2. 和公平锁相比，这里会直接先进行一次CAS，成功就返回了
+        if (compareAndSetState(0, 1))
+            setExclusiveOwnerThread(Thread.currentThread());
+        else
+            acquire(1);
+    }
+    // AbstractQueuedSynchronizer.acquire(int arg)
+    public final void acquire(int arg) {
+        if (!tryAcquire(arg) &&
+            acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+            selfInterrupt();
+    }
+    protected final boolean tryAcquire(int acquires) {
+        return nonfairTryAcquire(acquires);
+    }
+}
+/**
+ * Performs non-fair tryLock.  tryAcquire is implemented in
+ * subclasses, but both need nonfair try for trylock method.
+ */
+final boolean nonfairTryAcquire(int acquires) {
+    final Thread current = Thread.currentThread();
+    int c = getState();
+    if (c == 0) {
+        // 这里没有对阻塞队列进行判断
+        if (compareAndSetState(0, acquires)) {
+            setExclusiveOwnerThread(current);
+            return true;
+        }
+    }
+    else if (current == getExclusiveOwnerThread()) {
+        int nextc = c + acquires;
+        if (nextc < 0) // overflow
+            throw new Error("Maximum lock count exceeded");
+        setState(nextc);
+        return true;
+    }
+    return false;
+}
+```
+
+总结：公平锁和非公平锁只有两处不同：
+
+1. 非公平锁在调用 lock 后，首先就会调用 CAS 进行一次抢锁，如果这个时候恰巧锁没有被占用，那么直接就获取到锁返回了。
+2. 非公平锁在 CAS 失败后，和公平锁一样都会进入到 tryAcquire 方法，在 tryAcquire 方法中，如果发现锁这个时候被释放了（state == 0），非公平锁会直接 CAS 抢锁，但是公平锁会判断等待队列是否有线程处于等待状态，如果有则不去抢锁，乖乖排到后面。
+
+公平锁和非公平锁就这两点区别，如果这两次 CAS 都不成功，那么后面非公平锁和公平锁是一样的，都要进入到阻塞队列等待唤醒。
+
+相对来说，非公平锁会有更好的性能，因为它的吞吐量比较大。当然，非公平锁让获取锁的时间变得更加不确定，可能会导致在阻塞队列中的线程长期处于饥饿状态。
+
+**2)Share**（共享）
+
+多个线程可同时执行，如Semaphore/CountDownLatch。Semaphore、CountDownLatCh、 CyclicBarrier、ReadWriteLock 我们都会在后面讲到。
 
 ReentrantReadWriteLock 可以看成是组合式，因为ReentrantReadWriteLock也就是读写锁允许多个线程同时对某一资源进行读。
 
@@ -128,7 +238,7 @@ tryReleaseShared(int)//共享方式。尝试释放资源，成功则返回true�
 
 ### 3 Semaphore(信号量)-允许多个线程同时访问
 
-**synchronized 和 ReentrantLock 都是一次只允许一个线程访问某个资源，Semaphore(信号量)可以指定多个线程同时访问某个资源。**示例代码如下：
+**synchronized 和 ReentrantLock 都是一次只允许一个线程访问某个资源，Semaphore(信号量)可以指定多个线程同时访问某个资源。** 示例代码如下：
 
 ```java
 /**
@@ -471,6 +581,12 @@ CyclicBarrier和CountDownLatch的区别这部分内容参考了如下两篇文�
 
 ReentrantLock 和 synchronized 的区别在上面已经讲过了这里就不多做讲解。另外，需要注意的是：读写锁 ReentrantReadWriteLock 可以保证多个线程可以同时读，所以在读操作远大于写操作的时候，读写锁就非常有用了。
 
-由于篇幅问题，关于 ReentrantLock 和 ReentrantReadWriteLock 详细内容可以查看我的这篇原创文章。
+## 公众号
 
-- [ReentrantLock 和 ReentrantReadWriteLock](https://mp.weixin.qq.com/s?__biz=MzU4NDQ4MzU5OA==&mid=2247483745&idx=2&sn=6778ee954a19816310df54ef9a3c2f8a&chksm=fd985700caefde16b9970f5e093b0c140d3121fb3a8458b11871e5e9723c5fd1b5a961fd2228&token=1829606453&lang=zh_CN#rd)
+如果大家想要实时关注我更新的文章以及分享的干货的话，可以关注我的公众号。
+
+**《Java面试突击》:** 由本文档衍生的专为面试而生的《Java面试突击》V2.0 PDF 版本[公众号](#公众号)后台回复 **"面试突击"** 即可免费领取！
+
+**Java工程师必备学习资源:** 一些Java工程师常用学习资源公众号后台回复关键字 **“1”** 即可免费无套路获取。 
+
+![我的公众号](https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-6/167598cd2e17b8ec.png)
