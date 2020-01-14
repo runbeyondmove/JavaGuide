@@ -27,7 +27,8 @@
 </a>
 </p>
 
-推荐使用  https://snailclimb.gitee.io/javaguide 在线阅读，在线阅读内容本仓库同步一致。这种方式阅读的优势在于：阅读体验会更好。
+推荐使用  https://runbeyondmove.gitee.io/javaguide 在线阅读，在线阅读内容本仓库同步一致。这种方式阅读的优势在于：阅读体验会更好。
+特别说明：只是为了阅读方便，针对javaguide项目，添加一些个人的理解，并会与原项目不定时同步，要看原项目，请查看https://snailclimb.gitee.io/javaguide
 
 ## 目录
 
