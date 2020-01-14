@@ -51,6 +51,7 @@
 - 常见的垃圾回收器有哪些？
 - 介绍一下 CMS,G1 收集器。
 - Minor Gc 和 Full GC 有什么不同呢？
+- [为什么新生代内存需要有两个Survivor区?](https://blog.csdn.net/antony9118/article/details/51425581)
 
 ### 本文导火索
 
