@@ -237,6 +237,8 @@ JDK 1.8 的时候，方法区（HotSpot 的永久代）被彻底移除了（JDK1
 ![](http://my-blog-to-use.oss-cn-beijing.aliyuncs.com/18-9-14/26038433.jpg)
 ——图片来源：https://blog.csdn.net/wangbiao007/article/details/78545189
 
+更加深入的内容，可以查看[JVM中三个常量池（两种常量池）的解析及其随jdk版本的变化](https://www.javatt.com/p/47643)
+
 
 ### 2.7 直接内存
 
