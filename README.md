@@ -1,5 +1,7 @@
 点击关注[公众号](#公众号)及时获取笔主最新更新文章，并可免费领取本文档配套的《Java面试突击》以及Java工程师必备学习资源。
 
+**[犹豫了很久，还是做了一个很久没敢做的事情](https://javaguide.cn/2019/01/02/chat/%E5%81%9A%E4%BA%86%E4%B8%80%E4%B8%AA%E5%BE%88%E4%B9%85%E6%B2%A1%E6%95%A2%E5%81%9A%E7%9A%84%E4%BA%8B%E6%83%85/)**
+
 <p align="center">
 <a href="https://github.com/Snailclimb/JavaGuide" target="_blank">
 	<img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-3/logo - 副本.png" width=""/>
@@ -17,9 +19,12 @@
 
 <h3 align="center">Sponsor</h3>
 <p align="center">
-  <a  href="https://url.163.com/hXm" >
+<a  href="https://url.163.com/hXm">
 <img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-7/WechatIMG1.png"width="" style="margin: 0 auto;"/>
-  </a >
+</a>
+<a  href="http://mp.weixin.qq.com/s?__biz=MjM5MTE1NTQ4Mg==&mid=502249586&idx=1&sn=6384cb5b150b8e2a1c71715d6e4ea777&chksm=3ea2cc0709d54511aaa36b6f6d626219ece05295f80fad2c8e5df877345698b7eb92e1f454b3#rd">
+<img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-11/WechatIMG24.jpeg"  style=" margin: 0 auto;"/>
+</a>
 </p>
 
 推荐使用  https://snailclimb.gitee.io/javaguide 在线阅读，在线阅读内容本仓库同步一致。这种方式阅读的优势在于：阅读体验会更好。
@@ -57,7 +62,6 @@
     - [设计模式(工厂模式、单例模式 ... )](#设计模式)
 - [面试指南](#面试指南)
     - [备战面试](#备战面试)
-    - [常见面试题总结](#常见面试题总结)
     - [面经](#面经)
 - [Java学习常见问题汇总](#java学习常见问题汇总)
 - [工具](#工具)
@@ -138,6 +142,7 @@
 
 ### 数据结构
 
+- [不了解布隆过滤器？一文给你整的明明白白！](docs/dataStructures-algorithms/data-structure/bloom-filter.md)
 - [数据结构知识学习与面试](docs/dataStructures-algorithms/数据结构.md)
 
 ### 算法
@@ -170,7 +175,7 @@
 
 ### 数据库扩展
 
-代办......
+待办......
 
 ## 系统设计
 
@@ -203,6 +208,7 @@
 
 - [消息队列总结](docs/system-design/data-communication/message-queue.md)
 - [RabbitMQ 入门](docs/system-design/data-communication/rabbitmq.md)
+- [RocketMQ 入门](docs/system-design/data-communication/RocketMQ.md)
 - [RocketMQ的几个简单问题与答案](docs/system-design/data-communication/RocketMQ-Questions.md)
 - [Kafka入门看这一篇就够了](docs/system-design/data-communication/Kafka入门看这一篇就够了.md)
 - [Kafka系统设计开篇-面试看这篇就够了](docs/system-design/data-communication/Kafka系统设计开篇-面试看这篇就够了.md)
@@ -225,7 +231,7 @@
 
 #### 配置中心
 
-代办......
+待办......
 
 #### 唯一 id 生成
 
@@ -233,7 +239,7 @@
 
 #### 服务治理：服务注册与发现、服务路由控制
 
-代办......
+待办......
 
 ### 架构
 
@@ -253,15 +259,13 @@
 * **[【备战面试3】7个大部分程序员在面试前很关心的问题](docs/essential-content-for-interview/PreparingForInterview/JavaProgrammerNeedKnow.md)**
 * **[【备战面试4】Github上开源的Java面试/学习相关的仓库推荐](docs/essential-content-for-interview/PreparingForInterview/JavaInterviewLibrary.md)**
 * **[【备战面试5】如果面试官问你“你有什么问题问我吗？”时，你该如何回答](docs/essential-content-for-interview/PreparingForInterview/面试官-你有什么问题要问我.md)**
-* **[【备战面试6】美团面试常见问题总结（附详解答案）](docs/essential-content-for-interview/PreparingForInterview/美团面试常见问题总结.md)**
+* [【备战面试6】应届生面试最爱问的几道 Java 基础问题](docs/essential-content-for-interview/PreparingForInterview/应届生面试最爱问的几道Java基础问题.md)
+* **[【备战面试6】美团面试常见问题总结(附详解答案)](docs/essential-content-for-interview/PreparingForInterview/美团面试常见问题总结.md)**
 * **[【备战面试7】一些刁难的面试问题总结](https://xiaozhuanlan.com/topic/9056431872)**
 
-### 常见面试题总结
+### 真实面试经历分析
 
-* [第一周（2018-8-7）](docs/essential-content-for-interview/MostCommonJavaInterviewQuestions/第一周（2018-8-7）.md) (为什么 Java 中只有值传递、==与equals、 hashCode与equals)
-* [第二周（2018-8-13）](docs/essential-content-for-interview/MostCommonJavaInterviewQuestions/第二周(2018-8-13).md)(String和StringBuffer、StringBuilder的区别是什么？String为什么是不可变的？、什么是反射机制？反射机制的应用场景有哪些？......)
-* [第三周（2018-08-22）](docs/java/collection/Java集合框架常见面试题.md) （Arraylist 与 LinkedList 异同、ArrayList 与 Vector 区别、HashMap的底层实现、HashMap 和 Hashtable 的区别、HashMap 的长度为什么是2的幂次方、HashSet 和 HashMap 区别、ConcurrentHashMap 和 Hashtable 的区别、ConcurrentHashMap线程安全的具体实现方式/底层具体实现、集合框架底层数据结构总结）
-* [第四周(2018-8-30).md](docs/essential-content-for-interview/MostCommonJavaInterviewQuestions/第四周(2018-8-30).md) （主要内容是几道面试常问的多线程基础题。）
+- [我和阿里面试官的一次“邂逅”(附问题详解)](docs/essential-content-for-interview/real-interview-experience-analysis/alibaba-1.md)
 
 ### 面经
 
@@ -284,7 +288,7 @@
 ### Docker
 
 * [Docker 基本概念解读](docs/tools/Docker.md)
-* [一文搞懂 Docker 镜像的常用操作！](docs/tools/Docker-Image.md)
+* [一文搞懂 Docker 镜像的常用操作！](docs/tools/Docker-Image.md )
 
 ### 其他
 
@@ -303,6 +307,7 @@
 ### Github
 
 - [Github 上 Star 数最多的 10 个项目，看完之后很意外!](docs/tools/github/github-star-ranking.md)
+- [年末将至，值得你关注的16个Java 开源项目！](docs/github-trending/2019-12.md)
 - [Java 项目月榜单](docs/github-trending/JavaGithubTrending.md)
 
 ***
@@ -360,7 +365,11 @@ Markdown 格式参考：[Github Markdown格式](https://guides.github.com/featur
 下面是笔主收集的一些对本仓库提过有价值的pr或者issue的朋友，人数较多，如果你也对本仓库提过不错的pr或者issue的话，你可以加我的微信与我联系。下面的排名不分先后！
 
 <a href="https://github.com/fanofxiaofeng">
-    <img src="https://avatars0.githubusercontent.com/u/3983683?s=460&v=4" width="45px"></a>
+    <img src="https://avatars0.githubusercontent.com/u/3983683?s=460&v=4" width="45px">
+</a>
+<a href="https://github.com/LiWenGu">
+    <img src="https://avatars0.githubusercontent.com/u/15909210?s=460&v=4" width="45px">
+</a>
 <a href="https://github.com/fanchenggang">  
     <img src="https://avatars2.githubusercontent.com/u/8225921?s=460&v=4" width="45px">
 </a>
@@ -377,9 +386,6 @@ Markdown 格式参考：[Github Markdown格式](https://guides.github.com/featur
     <img src="https://avatars0.githubusercontent.com/u/12581996?s=460&v=4" width="45px"></a>
 <a href="https://github.com/illusorycloud">
     <img src="https://avatars3.githubusercontent.com/u/31980412?s=460&v=4" width="45px">
-</a>
-<a href="https://github.com/LiWenGu">
-    <img src="https://avatars0.githubusercontent.com/u/15909210?s=460&v=4" width="45px">
 </a>
 <a href="https://github.com/kinglaw1204">
     <img src="https://avatars1.githubusercontent.com/u/20039931?s=460&v=4" width="45px">
